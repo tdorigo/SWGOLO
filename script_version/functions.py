@@ -15,12 +15,15 @@ from matplotlib.colors import LogNorm
 from matplotlib.colors import Normalize
 from torch.utils.data import TensorDataset, DataLoader
 
+# input your path
+swgolo="/big_disk_2/swgo_test/SWGOLO"
 
 
 # GLOBAL VARIABLES USED IN FUNCTIONS
 #Matrices we use in the functions
-path_g = "/big_disk_2/swgo_test/SWGOLO/Fit_Photon_10_pars.txt"
-path_p = "/big_disk_2/swgo_test/SWGOLO/Fit_Proton_2_pars.txt"
+
+path_g = swgolo + "/Fit_Photon_10_pars.txt"
+path_p = swgolo + "/Fit_Proton_2_pars.txt"
 A = torch.tensor([[1, 1, 1, 1],[1, 2, 4, 8], [1, 3, 9, 27], [1, 4, 16, 64]] , dtype = torch.float32)
 
 #Constants
@@ -53,12 +56,11 @@ largenumber = 1e13
 epsilon = 1 / largenumber
 
 #NN
-Nevents = 400000 
-Nvalidation = 40000
+Nevents = 200000 
+Nvalidation = 20000
 
 # LO-Optimization 
 SWGOopt = False
-
 
 
 # SHOWER GENERATOR 
@@ -587,8 +589,9 @@ print('all libraries were loaded')
 
 
 
-
-# NEURAL NETWORK 
+##################
+# NEURAL NETWORK #
+##################
 '''
 In this section we are creating our neural network, we will train it with some simulated EAS. the idea is to feed the network with detector positions, with detected number of particles, and time of arrival. Then we neural network output will be energy of the shower, angles, and shower core (X, Y)
 
@@ -681,8 +684,9 @@ class EarlyStopping:
 
 
 
-
-# UTILITIES and OPTIMIZATION
+##############################
+# UTILITIES and OPTIMIZATION #
+##############################
 '''
 These functions are defined to optimize the unit positions maximizing the value of utility functions
 '''

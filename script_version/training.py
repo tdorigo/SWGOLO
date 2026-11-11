@@ -3,15 +3,13 @@ import argparse
 import time
 import sys
 
+t0 = time.time()
+
 '''
-In this part we are defining our model, which is the Neural network for our reconstruction
+In this part we are defining our model, which is the Fully Connected Neural Network (FCNN) for our reconstruction
 We will use Mean Square Error Loss
 Optimization model is SGD, to keep consistent with our next steps
 '''
-t0 = time.time()
-
-
-
 
 # weight loss estimator 
 def estimate_weights(WL, model, optimizer, epoch, batch_idx, N=50):
@@ -72,6 +70,7 @@ parser.add_argument('--inputs',type=str)
 parser.add_argument('--inputs_val',type=str)
 parser.add_argument('--labels',type=str)
 parser.add_argument('--labels_val',type=str)
+parser.add_argument('--set_name', type=str)
 args = parser.parse_args()
 
 inputs = torch.load(args.inputs)
@@ -96,7 +95,9 @@ val_losses = []
 losses = []
 
 early_stopper = EarlyStopping()
-CL = True
+
+# Curriculum learning strategy flag. If CL=FALSE, it executes the way Ulas defined in SWGOLO7.ipynb
+CL = True 
 for num_epoch in range(200):
     model.train()
     epoch_loss = 0
@@ -231,8 +232,8 @@ plt.legend()
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
 plt.grid()
-plt.savefig('./outputs/curriculum_learning/loss.png')
+plt.savefig(args.set_name+'.png')
 
-torch.save(model.state_dict(), './NN_Files/curriculum_learning.pth')
+torch.save(model.state_dict(), args.set_name+'.pth')
 print('model saved')
 print("--- %s seconds ---" % (time.time() - t0))
